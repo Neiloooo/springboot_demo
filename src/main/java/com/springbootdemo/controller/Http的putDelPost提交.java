@@ -1,12 +1,11 @@
 package com.springbootdemo.controller;
 
+import com.springbootdemo.controller.JpaLearn.complexJpa.Users;
 import org.omg.CORBA.PUBLIC_MEMBER;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 //测试http协议的post,del,put请求
@@ -14,6 +13,10 @@ import java.util.Map;
 public class Http的putDelPost提交 {
 
     private Map<String,Object> params = new HashMap<>();
+
+
+
+
 
     /**
      * 测试PostMapping的提交方式(一般提交,新增)
@@ -51,6 +54,5 @@ public class Http的putDelPost提交 {
         params.clear();
         params.put("id",id);
         return params;
-
     }
 }
