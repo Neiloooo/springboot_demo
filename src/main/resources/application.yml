@@ -1,13 +1,44 @@
 server:
-  port: 8086
+  port: 8090 #端口
+  tomcat:
+    uri-encoding: UTF-8
 
 spring:
+  application:
+    name: springdemo  # 项目名称
   #通用的数据源配置
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/jpadata?useUnicode=true&characterEncoding=UTF8&useSSL=false&serverTimezone=GMT%2B8
     username: root
     password: root
+
+  thymeleaf:
+    #模板编码
+    mode: LEGACYHTML5
+    #是否缓存  别闹不缓存
+    cache: false
+    # 在构建URL时预先查看名称的前缀
+    prefix: classpath:/templates/
+    # 构建URL时附加查看名称的后缀.
+    suffix: .html
+
+  redis:
+    port: 6379 #默认的端口
+    host: 127.0.0.1 #默认的Ip,这里选的本地
+    #password:
+    database: 0  #默认的数据库
+    jedis:
+      pool:  #redis线程池设置
+        max-idle: 200 #连接池中的最大空闲连接,默认值8(-1为不做限制)
+        min-idle: 200 #连接池中的最小空闲连接,默认值是0
+        max-active: 8 # 最大连接实例,-1表示不限制,pool已经分配了macActive个jedis实例,,则此时poll的状态为耗尽
+        max-wait: -1ms #等待可用连接的最大时间,单位为毫秒,默认-1永不超时
+    timeout: 1s # 连接超时
+  cache:
+    redis:
+      time-to-live: 10000 #默认毫秒级别
+
   jpa:
     #这个参数是在建表的时候，将默认的存储引擎切换为 InnoDB 用的
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -16,3 +47,28 @@ spring:
     hibernate:
       #配置指明在程序启动的时候要删除并且创建实体类对应的表
       ddl-auto: update
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+
+
+mybatis:
+  #Mapper的位置
+  mapper-locations: classpath:mybatis/*.xml
+  #Mybatis实体位置,也就是别名,可用可不用
+  type-aliases-package: com.springbootdemo.controller.Mybatis.entity
+  # Mybatis SQL语句控制台打印
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#pagehelper分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true # #启用合理化时，如果pageNum<1会查询第一页，如果pageNum>总页数会查询最后一页； #禁用合理化时，如果pageNum<1或pageNum>总页数会返回空数据。
+  supportMethodsArguments: true #支持通过Mapper接口参数来传递分页参数，默认值false，分页插件会从查询方法的参数值中，自动根据上面 params 配置的字段中取值，查找到合适的值时就会自动分页。
+  params: count=countSql #为了支持startPage(Object params)方法，增加了该参数来配置参数映射，用于从对象中根据属性名取值; 可以配置 pageNum,pageSize,count,pageSizeZero,reasonable，不配置映射的用默认值， 默认值为pageNum=pageNum;pageSize=pageSize;count=countSql;reasonable=reasonable;pageSizeZero=pageSizeZero。
+#日志级别
+logging:
+  level:
+    com.xin.usercenter.dao: debug

@@ -1,7 +1,7 @@
 package com.springbootdemo.controller.JpaLearn.complexJpa;
 
+import com.springbootdemo.controller.JpaLearn.complexJpa.model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

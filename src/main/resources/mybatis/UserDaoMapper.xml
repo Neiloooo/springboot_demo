@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.springbootdemo.controller.Mybatis.mapper.UserDaoMapper">
+    <insert id="insert" parameterType="com.springbootdemo.controller.Mybatis.entity.MybatisDemoUser" >
+          insert into user
+        (name ,pwd)values(#{name},#{pwd});
+    </insert>
+
+    <update id="update" parameterType="com.springbootdemo.controller.Mybatis.entity.MybatisDemoUser" >
+    update   user  set name=#{name},pwd=#{pwd} where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="integer">
+        delete from user where id=#{id}
+    </delete>
+
+    <select id="getUserList"  parameterType="integer" resultType="com.springbootdemo.controller.Mybatis.entity.MybatisDemoUser">
+        select * from user
+    </select>
+
+    <select id="getByName" parameterType="String" resultType="com.springbootdemo.controller.Mybatis.entity.MybatisDemoUser">
+        select  * from user where name =#{name}
+    </select>
+</mapper>

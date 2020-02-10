@@ -1,18 +1,15 @@
 package com.springbootdemo.controller.JpaLearn.complexJpa.controller;
 
 
-import com.springbootdemo.controller.JpaLearn.complexJpa.Users;
-import com.springbootdemo.controller.JpaLearn.complexJpa.UsersDaoRepository;
+import com.springbootdemo.controller.JpaLearn.complexJpa.model.Users;
 import com.springbootdemo.controller.JpaLearn.complexJpa.service.UserServiceImpl;
-import com.springbootdemo.domain.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-@Api(tags = "JPA的单表增删改查")
+@Api(tags = "JPA的单表增删改查,以及分页查询")
 @RestController
 @RequestMapping("user")
 public class JpaComplexController {
@@ -67,6 +64,24 @@ public class JpaComplexController {
         return "success";
     }
 
+    /**
+     * jpa是根据返回的类型自动判断是否分页，如果返回类型为Page,则返回的数据是带分页参数的集合，
+     * 如果返回类型是list,则返回的数据是list集合。
+     * @param page
+     * @param size
+     * @param params
+     * @return
+     */
+    @ApiOperation(value = "分页排序查全部", notes = "使用jpa自带的page对象分页并排序,参数为页数,每页多少个,以及以什么参数排序")
+    @PostMapping("findByPage")
+    private List<Users> findAllByPageAntDesc(Integer page, Integer size, String params){
+        return userService.FindallPage(page,size,params).getContent();
+    }
 
+    @ApiOperation(value = "Example的计数", notes = "使用JPA的计数与Example,不用传入精确的参数,实现查询")
+    @GetMapping("countUser")
+    private Long countUser(Users users){
+        return userService.countNumebr(users);
+    }
 
 }

@@ -1,12 +1,18 @@
-package com.springbootdemo.controller.JpaLearn.complexJpa;
+package com.springbootdemo.controller.JpaLearn.complexJpa.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "t_users")
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Users implements Serializable {
 
     @Id

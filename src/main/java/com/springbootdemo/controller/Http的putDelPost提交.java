@@ -1,11 +1,8 @@
 package com.springbootdemo.controller;
 
-import com.springbootdemo.controller.JpaLearn.complexJpa.Users;
-import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 //测试http协议的post,del,put请求

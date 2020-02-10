@@ -13,7 +13,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 /**
  * 引入这个配置文件和依赖,在Controller层再加上注解即可
  * @describe： swagger2 RESTful接口文档配置
- *             文档URL: http://localhost:8086/doc.html
+ *             文档URL: http://localhost:8090/doc.html
  * @version: 1.0
  */
 

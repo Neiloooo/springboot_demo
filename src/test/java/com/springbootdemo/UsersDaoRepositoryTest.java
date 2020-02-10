@@ -1,6 +1,6 @@
 package com.springbootdemo;
 
-import com.springbootdemo.controller.JpaLearn.complexJpa.Users;
+import com.springbootdemo.controller.JpaLearn.complexJpa.model.Users;
 import com.springbootdemo.controller.JpaLearn.complexJpa.UsersDaoRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
