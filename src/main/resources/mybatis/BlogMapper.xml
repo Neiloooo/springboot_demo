@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.springbootdemo.controller.Mybatis.mapper.BlogMapper">
+
+
+    <insert id="insertBlog" parameterType="com.springbootdemo.controller.Mybatis.entity.Blog">
+        insert  into blog(id,title,author,create_time,views)
+        values (#{id},#{title},#{author},#{creatTime},#{views});
+    </insert>
+
+<!--    通过在xml中写if标签,提高sql的复用性-->
+<!--    这个select的意思是,如果前端传入了title就在查询的条件加上title条件-->
+<!--    如果传入author,就在查询条件加入author条件-->
+    <select id="queryBlogIf" resultType="com.springbootdemo.controller.Mybatis.entity.Blog">
+        select * from blog where 1=1
+        <if test="title !=null ">
+            and title =#{title}
+        </if>
+        <if test="author !=null ">
+            and author = #{author}
+        </if>
+    </select>
+
+
+
+<!--    有时候我们并不想应用所有的条件，而只是想从多个选项中选择一个。-->
+<!--    而使用if标签时，只要test中的表达式为 true，就会执行 if 标签中的条件。-->
+<!--    MyBatis 提供了 choose 元素。if标签是与(and)的关系，而 choose 是或(or)的关系-->
+    <select id="queryBlogChoose" parameterType="com.springbootdemo.controller.Mybatis.entity.Blog" resultType="com.springbootdemo.controller.Mybatis.entity.Blog">
+        select * FROM  blog
+        <where>
+            <choose>
+                <when test="author != null and author != ''">
+                    and author=#{author}
+                </when>
+                <otherwise>
+                    and views= #{views}
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+
+
+<!--    set标签会动态设置set关键字,同时也会删除无关逗号-->
+<!--    动态更新,谁变更谁-->
+    <update id="updateBlog" parameterType="com.springbootdemo.controller.Mybatis.entity.Blog"  >
+        update bllog
+        <set>
+            <include refid="if-title-author"></include>
+        </set>
+        where id=#{id}
+    </update>
+
+
+<!--    将一部分sql提取出来,方便复用,使用include标签的refid进行复用-->
+    <sql id="if-title-author">
+        <if test="title != null and title != ''">
+            title=#{title}
+        </if>
+        <if test="author != null and author != ''">
+            author=#{author}
+        </if>
+    </sql>
+
+<!--
+    sql:select * from blog where 1=1 and (id=1 or id = 2 or id = 3)
+        Foreach标签(For循环)
+        批量增删改查,非全部
+        -->
+    <select id="queryBlogForeach" parameterType="java.util.Map"  resultType="com.springbootdemo.controller.Mybatis.entity.Blog">
+        select * from blog
+        <where>
+            <foreach collection="ids" item="id" open="and (" close=")" separator="or">
+                id=#{id}
+            </foreach>
+        </where>
+
+
+    </select>
+
+</mapper>

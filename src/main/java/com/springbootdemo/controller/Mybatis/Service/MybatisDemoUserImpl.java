@@ -61,4 +61,9 @@ public class MybatisDemoUserImpl implements MybatisUser {
         PageInfo<MybatisDemoUser> pageInfo = new PageInfo<>(userList);
         return pageInfo;
     }
+
+    @Override
+    public List<MybatisDemoUser> getUserLike(String name) {
+        return userDao.getUserLike(name);
+    }
 }

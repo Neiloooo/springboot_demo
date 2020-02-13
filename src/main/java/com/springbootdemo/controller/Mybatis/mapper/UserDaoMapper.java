@@ -20,4 +20,7 @@ public interface UserDaoMapper {
 
     //查询全部
     List<MybatisDemoUser> getUserList();
+
+    //根据姓名模糊查询
+    List<MybatisDemoUser> getUserLike(String name);
 }

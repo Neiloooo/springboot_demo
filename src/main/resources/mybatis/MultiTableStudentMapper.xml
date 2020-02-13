@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.springbootdemo.controller.Mybatis.mapper.MultiTableStudentMapper">
+
+
+<!--    思路2:(两个sql),子查询-->
+<!--        ①查询出所有的学生信息-->
+<!--        ②根据查询出来的学生tid,寻找对应的老师-->
+
+<!--    查询出所有学生等信息包括tid-->
+    <select id="getStudent" resultMap="StudentTeacher">
+        select * from student
+    </select>
+
+<!--    建立查询结果的映射关系,执行子查询-->
+    <resultMap id="StudentTeacher" type="com.springbootdemo.controller.Mybatis.entity.MultiTableStudent">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+<!--        复杂的属性,我们需要单独处理 对象:association 集合:collection-->
+<!--        根据查出来的tid,执行嵌套在里面的子查询-->
+        <association property="teacher" column="tid" javaType="com.springbootdemo.controller.Mybatis.entity.MultiTableTeacher" select="getTeacher"/>
+    </resultMap>
+
+<!--    根据教师ID查询教师,通过上面的映射关系掺入参数    -->
+    <select id="getTeacher" resultType="com.springbootdemo.controller.Mybatis.entity.MultiTableTeacher">
+        select
+        *
+        FROM
+        teacher
+        where
+        id =#{id}
+    </select>
+
+
+    <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+<!--二、按照结果嵌套处理(常用)-->
+    <select id="getStudentByResult" resultMap="StudentTeacherByResutlt">
+        select
+        s.id sid,
+        s.name sname,
+        t.name tname
+        FROM
+        student s,
+        teacher t
+        where s.tid=t.id;
+    </select>
+
+    <resultMap id="StudentTeacherByResutlt" type="com.springbootdemo.controller.Mybatis.entity.MultiTableStudent">
+        <result property="id" column="sid"/>
+        <result property="name" column="sname"/>
+        <association property="teacher" javaType="com.springbootdemo.controller.Mybatis.entity.MultiTableTeacher">
+            <result property="name" column="tname"/>
+        </association>
+    </resultMap>
+
+
+
+</mapper>

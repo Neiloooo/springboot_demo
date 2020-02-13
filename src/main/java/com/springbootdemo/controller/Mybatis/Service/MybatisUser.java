@@ -24,4 +24,7 @@ public interface MybatisUser  {
 
     //分页插件分页,返回的是PageInfo对象
     PageInfo<MybatisDemoUser> findAllUserByPages(int pageNum, int pageSize);
+
+    //模糊查询
+    List<MybatisDemoUser> getUserLike(String name);
 }

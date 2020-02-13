@@ -4,6 +4,17 @@
 
 <!-- namespace必须指向Dao接口 -->
 <mapper namespace="com.springbootdemo.controller.Mybatis.mapper.UserDaoMapper">
+
+<!--    结果集映射-->
+    <resultMap id="UserMap" type="com.springbootdemo.controller.Mybatis.entity.MybatisDemoUser">
+<!--        column是数据库中的字段,property是实体类中的属性-->
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="password" property="pwd"/>
+    </resultMap>
+    
+    
+    
     <insert id="insert" parameterType="com.springbootdemo.controller.Mybatis.entity.MybatisDemoUser" >
           insert into user
         (name ,pwd)values(#{name},#{pwd});
@@ -24,4 +35,15 @@
     <select id="getByName" parameterType="String" resultType="com.springbootdemo.controller.Mybatis.entity.MybatisDemoUser">
         select  * from user where name =#{name}
     </select>
+
+    <select id="getUserLike" resultType="com.springbootdemo.controller.Mybatis.entity.MybatisDemoUser">
+    select
+        *
+    from
+        user
+    where
+        name like "%"'#{name}'"%"
+    </select>
+
+
 </mapper>

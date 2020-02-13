@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.springbootdemo.controller.Mybatis.mapper.MultiTableTeacherMapper">
+
+<!--  1.  按结果嵌套查询-->
+    <select id="getTeahcer" resultMap="TeacherStudentList">
+        select s.id sid,s.name sname,t.name tname,t.id tid
+        from
+        student s,teacher t
+        where  s.tid=t.id and t.id=#{tid}
+    </select>
+
+<!--    一对多的结果集映射,coolection-->
+    <resultMap id="TeacherStudentList" type="com.springbootdemo.controller.Mybatis.entity.MultiTableTeacher">
+        <result property="id" column="tid"/>
+        <result property="name" column="tname"/>
+<!--        复杂的属性,需要我们单独处理 对象:association 集合:collection-->
+<!--        javaType: 制定的属性类型(对象的类型)-->
+<!--        集合中的泛型信息,我们使用ofType-->
+        <collection property="multiTableStudents" ofType="com.springbootdemo.controller.Mybatis.entity.MultiTableStudent">
+            <result property="id" column="sid"/>
+            <result property="name" column="sname"/>
+            <result property="tid" column="tid"/>
+        </collection>
+    </resultMap>
+
+    <!--    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+<!--  2.  通过子查询的方式映射-->
+    <select id="getTeahcerByQuery" resultMap="TeacherStudentList2">
+        select * from teacher where  id=#{tid};
+    </select>
+
+    <resultMap id="TeacherStudentList2" type="com.springbootdemo.controller.Mybatis.entity.MultiTableTeacher">
+        <collection property="multiTableStudents"  ofType="com.springbootdemo.controller.Mybatis.entity.MultiTableStudent"
+                    select="getStudentByTeacherId" column="id"/>
+    </resultMap>
+    <select id="getStudentByTeacherId" resultType="com.springbootdemo.controller.Mybatis.entity.MultiTableStudent">
+        select  * FROM  student where tid= #{tid}
+    </select>
+
+
+
+</mapper>
+
+

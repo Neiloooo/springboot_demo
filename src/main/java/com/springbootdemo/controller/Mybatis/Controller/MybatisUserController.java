@@ -71,4 +71,13 @@ public class MybatisUserController {
     }
 
 
+    @ApiOperation(value = "模糊查询", notes = "使用sql的concat进行模糊匹配查询")
+    @GetMapping("/getLikeByName/{name}")
+    public List<MybatisDemoUser> getLikeByName(String name){
+        List<MybatisDemoUser> queryResult = mybatisUser.getUserLike(name);
+        return queryResult;
+    }
+
+
+
 }
